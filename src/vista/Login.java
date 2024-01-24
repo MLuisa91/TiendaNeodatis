@@ -5,12 +5,15 @@
  */
 package vista;
 
+import controlador.CRUD_Clientes;
 import java.util.List;
+import modelo.Administrador;
+import modelo.Usuario;
 
 public class Login extends javax.swing.JFrame {
 
-    private CRUD_Usuarios crudUsuarios = new CRUD_Usuarios();
-    
+    private CRUD_Clientes crudClientes = new CRUD_Clientes();
+
     public Login() {
         setLocationRelativeTo(null);
         initComponents();
@@ -104,28 +107,16 @@ public class Login extends javax.swing.JFrame {
     private void jButtonLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLoginActionPerformed
 
         String usuario = jTextFieldDni.getText();
-        String password = jPasswordField.getText();
-        
-        Usuario u = new Usuario(null, null, null, null, null, null, usuario, password, null);
-        
-        Usuario user = crudUsuarios.searchByUserAndPassword(u);
-        
-        if(user!=null){
-            if(user instanceof Administrador){
-                BienvenidoAdmin bienvenida = new BienvenidoAdmin(u);
-                    //regresar
-                bienvenida.setVisible(true);
-                this.dispose();
-            }else{
-               BienvenidoUsuario bienvenida = new BienvenidoUsuario(u);
-               bienvenida.setVisible(true);
-               this.dispose();
-            }
-        }else{
-            CreacionUsuario nuevo = new CreacionUsuario(user);
-            nuevo.setVisible(true);
+
+        Usuario u = new Usuario(null, usuario, null, null, null);
+
+        Usuario user = crudClientes.searchByDni(u);
+
+        if (user != null) {
+            BienvenidoUsuario bienvenida = new BienvenidoUsuario(u);
+            bienvenida.setVisible(true);
             this.dispose();
-        }     
+        }
 
 
     }//GEN-LAST:event_jButtonLoginActionPerformed

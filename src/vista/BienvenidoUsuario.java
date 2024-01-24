@@ -2,16 +2,31 @@ package vista;
 
 
 import java.util.List;
+import modelo.Administrador;
+import modelo.Usuario;
 import utils.AccionesEnum;
 
 public class BienvenidoUsuario extends javax.swing.JFrame {
 
-    /**
-     * Creates new form BienvenidoUsuario
-     */
-    public BienvenidoUsuario() {
+    private Usuario usuario;
+    
+    public BienvenidoUsuario(Usuario usuario) {
+        this.usuario = usuario;
         setLocationRelativeTo(null);
         initComponents();
+        
+        if(usuario instanceof Administrador){
+            jMenuCesta.setVisible(false);
+            jMenuItemNuevaCesta.setVisible(false);
+            jMenuItemListarCesta.setVisible(false);
+        }else{
+            jMenuCesta.setVisible(false);
+            jMenuItemAlta.setVisible(false);
+            jMenuItemListar.setVisible(false);
+            jMenuProducto.setVisible(false);
+            jMenuItemAltaProducto.setVisible(false);
+            jMenuItemListarProdcuto.setVisible(false);
+        }
     }
 
     /**
@@ -34,6 +49,9 @@ public class BienvenidoUsuario extends javax.swing.JFrame {
         jMenuProducto = new javax.swing.JMenu();
         jMenuItemAltaProducto = new javax.swing.JMenuItem();
         jMenuItemListarProdcuto = new javax.swing.JMenuItem();
+        jMenuCesta = new javax.swing.JMenu();
+        jMenuItemNuevaCesta = new javax.swing.JMenuItem();
+        jMenuItemListarCesta = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -97,6 +115,26 @@ public class BienvenidoUsuario extends javax.swing.JFrame {
         jMenuProducto.add(jMenuItemListarProdcuto);
 
         jMenu2.add(jMenuProducto);
+
+        jMenuCesta.setText("Cesta");
+
+        jMenuItemNuevaCesta.setText("Nueva");
+        jMenuItemNuevaCesta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemNuevaCestaActionPerformed(evt);
+            }
+        });
+        jMenuCesta.add(jMenuItemNuevaCesta);
+
+        jMenuItemListarCesta.setText("Listar");
+        jMenuItemListarCesta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemListarCestaActionPerformed(evt);
+            }
+        });
+        jMenuCesta.add(jMenuItemListarCesta);
+
+        jMenu2.add(jMenuCesta);
 
         jMenuBar1.add(jMenu2);
 
@@ -170,6 +208,20 @@ public class BienvenidoUsuario extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenu2ActionPerformed
 
+    private void jMenuItemNuevaCestaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemNuevaCestaActionPerformed
+        
+        GestionCesta gestion = new GestionCesta();
+        gestion.setVisible(true);
+        dispose();
+        
+    }//GEN-LAST:event_jMenuItemNuevaCestaActionPerformed
+
+    private void jMenuItemListarCestaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemListarCestaActionPerformed
+        ListarCesta listarCesta = new ListarCesta(usuario);
+        listarCesta.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_jMenuItemListarCestaActionPerformed
+
   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -178,11 +230,14 @@ public class BienvenidoUsuario extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelUsuario;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenu jMenuCesta;
     private javax.swing.JMenu jMenuCliente;
     private javax.swing.JMenuItem jMenuItemAlta;
     private javax.swing.JMenuItem jMenuItemAltaProducto;
     private javax.swing.JMenuItem jMenuItemListar;
+    private javax.swing.JMenuItem jMenuItemListarCesta;
     private javax.swing.JMenuItem jMenuItemListarProdcuto;
+    private javax.swing.JMenuItem jMenuItemNuevaCesta;
     private javax.swing.JMenu jMenuProducto;
     // End of variables declaration//GEN-END:variables
 }

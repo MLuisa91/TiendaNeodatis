@@ -6,20 +6,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
-import javax.swing.RowSorter.SortKey;
-import javax.swing.SortOrder;
-import javax.swing.table.TableRowSorter;
 import modelo.Cliente;
 import utils.AccionesEnum;
 
 public class ListarCliente extends javax.swing.JDialog {
 
     private TablaClientes modeloTabla;
-    private TableRowSorter<TablaClientes> sorter;
     private List<Cliente> lista;
     private CRUD_Clientes crudClientes = new CRUD_Clientes();
     private Cliente u;
@@ -247,7 +242,7 @@ public class ListarCliente extends javax.swing.JDialog {
         String dni = jTextFieldDni.getText();
 
 
-        Cliente c = new Cliente(dni, nombre, direccion, direccion);
+        Cliente c = new Cliente(false, dni, nombre, direccion, direccion);
 
         List<Cliente> filtrados = crudClientes.search(c);
 

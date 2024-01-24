@@ -4,57 +4,73 @@
  */
 package modelo;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
-class Cesta {
+public class Cesta {
 
-    private int cantidad;
+    private int id;
+    private String nombre;
     private Cliente cliente;
-    private Set<Producto> cesta;
+    private List<Producto> cesta;
     private float total;
 
-    public Cesta(int cantidad, Cliente cliente, Set<Producto> cesta, float total) {
-        this.cantidad = cantidad;
+    public Cesta(int id, String nombre, Cliente cliente, List<Producto> cesta, float total) {
+        this.id = id;
+        this.nombre = nombre;
         this.cliente = cliente;
-        this.cesta = cesta;
+        this.cesta = new ArrayList();
         this.total = total;
     }
 
-    public int getCantidad() {
-        return cantidad;
+    public int getId() {
+        return id;
     }
 
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
+    public String getNombre() {
+        return nombre;
     }
 
     public Cliente getCliente() {
         return cliente;
     }
 
+    public List<Producto> getCesta() {
+        return cesta;
+    }
+
+    public float getTotal() {
+        float total = 0;
+
+        for (Producto producto : cesta) {
+            total += producto.getPrecio();
+        }
+        return total;
+    }
+    
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
 
-    public Set<Producto> getCesta() {
-        return cesta;
-    }
-
-    public void setCesta(Set<Producto> cesta) {
+    public void setCesta(List<Producto> cesta) {
         this.cesta = cesta;
-    }
-
-    public float getTotal() {
-        return total;
     }
 
     public void setTotal(float total) {
         this.total = total;
     }
-
-    @Override
-    public String toString() {
-        return "Cesta{" + "cantidad=" + cantidad + ", cliente=" + cliente + ", cesta=" + cesta + ", total=" + total + '}';
-    }
     
+    
+
+ 
+
 }

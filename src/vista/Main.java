@@ -1,23 +1,33 @@
 package vista;
 
-import java.util.ArrayList;
+import modelo.Administrador;
+import modelo.Usuario;
+import org.neodatis.odb.ODB;
+import org.neodatis.odb.ODBFactory;
+import org.neodatis.odb.ODBRuntimeException;
 
-import modelo.Cliente;
 public class Main {
 
-    public static ArrayList<Cliente> usuarios;
-   
     public static void main(String[] args) {
-        
-        usuarios = new ArrayList<>();
-        //Cliente nuevo = new Cliente("admin", "admin");
-       // usuarios.add(nuevo);
-        
+
+        ODB odb = null;
+        try {
+            odb = ODBFactory.open("Tienda.db");
+            Usuario admin = new Administrador(Boolean.TRUE, "123456", "Maria", "Perez Perez", "Don Benito");
+
+            odb.store(admin);
+
+        } catch (ODBRuntimeException e) {
+            e.printStackTrace();
+        } finally {
+            if (odb != null && !odb.isClosed()) {
+                odb.close();
+            }
+        }
+
         Login log = new Login();
         log.setVisible(true);
-        
-        
-        
+
     }
-    
+
 }

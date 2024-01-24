@@ -196,7 +196,7 @@ public class GestionCliente extends javax.swing.JFrame {
             Cliente cliente = recogerDatos();
 
             String dni = jTextFieldDni.getText();
-            List<Cliente> misClientes = crudClientes.search(new Cliente(dni, null, null, null));
+            List<Cliente> misClientes = crudClientes.search(new Cliente(null, dni, null, null, null));
             if (misClientes.isEmpty()) {
                 if (cliente != null && crudClientes.add(cliente)) {
                     JOptionPane.showMessageDialog(this, "Operación realizada correctamente.");
@@ -258,7 +258,7 @@ public class GestionCliente extends javax.swing.JFrame {
         String direccion = jTextFieldDireccion.getText();
         String dni = jTextFieldDni.getText();
 
-        cliente = new Cliente(dni, nombre, apellidos, direccion);
+        cliente = new Cliente(false, dni, nombre, apellidos, direccion);
 
         return cliente;
     }

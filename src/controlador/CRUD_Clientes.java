@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import modelo.Cliente;
+import modelo.Usuario;
 import org.neodatis.odb.ODB;
 import org.neodatis.odb.ODBFactory;
 import org.neodatis.odb.Objects;
@@ -17,18 +18,19 @@ import org.neodatis.odb.impl.core.query.criteria.CriteriaQuery;
 
 public class CRUD_Clientes implements CRUD<Cliente> {
 
-    static ODB odb = ODBFactory.open("Tienda.db");
-
     @Override
     public boolean add(Cliente element) {
-
+        ODB odb = ODBFactory.open("Tienda.db");
         odb.store(element);
+        
+        odb.close();
 
         return true;
     }
 
     @Override
     public List<Cliente> search(Cliente element) {
+        ODB odb = ODBFactory.open("Tienda.db");
         ICriterion criterio = new Or().add(Where.equal("nombre", element.getNombre())).add(Where.equal("apellidos", element.getApellidos()))
                 .add(Where.like("direccion", element.getDireccion())).add(Where.like("dni", element.getDni()));
         
@@ -44,6 +46,7 @@ public class CRUD_Clientes implements CRUD<Cliente> {
 
     @Override
     public boolean update(Cliente element) {
+        ODB odb = ODBFactory.open("Tienda.db");
         CriteriaQuery query = new CriteriaQuery(Cliente.class, Where.equal("dni", element.getDni()));
 
         Objects<Cliente> resultados = odb.getObjects(query);
@@ -66,11 +69,13 @@ public class CRUD_Clientes implements CRUD<Cliente> {
 
     @Override
     public boolean delete(Cliente element) {
+        ODB odb = ODBFactory.open("Tienda.db");
         odb.delete(element);
         return true;
     }
 
     public List<Cliente> getClientes() {
+        ODB odb = ODBFactory.open("Tienda.db");
         Objects<Cliente> lista = odb.getObjects(Cliente.class);
         return (List<Cliente>) lista;
     }
@@ -79,6 +84,16 @@ public class CRUD_Clientes implements CRUD<Cliente> {
     @Override
     public Iterator<Cliente> listAll() {
         return this.getClientes().iterator();
+    }
+
+    public Usuario searchByDni(Usuario u) {
+        ODB odb = ODBFactory.open("Tienda.db");
+        CriteriaQuery query = new CriteriaQuery(Cliente.class, Where.equal("dni", u.getDni()));
+        Objects<Cliente> lista = odb.getObjects(query);
+        if (lista.hasNext()){
+            return lista.next();
+        }
+        return null;
     }
 
 }
