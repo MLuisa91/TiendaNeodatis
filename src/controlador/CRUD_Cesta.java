@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package controlador;
 
 import java.util.ArrayList;
@@ -23,8 +22,8 @@ import org.neodatis.odb.impl.core.query.criteria.CriteriaQuery;
  *
  * @author MRGOMAAL
  */
-public class CRUD_Cesta implements CRUD<Cesta>{
-    
+public class CRUD_Cesta implements CRUD<Cesta> {
+
     static ODB odb = ODBFactory.open("Tienda.db");
     private List<Producto> listaProductos;
 
@@ -34,35 +33,40 @@ public class CRUD_Cesta implements CRUD<Cesta>{
     public CRUD_Cesta(List<Producto> listaProductos) {
         this.listaProductos = new ArrayList();
     }
-    
+
     @Override
     public boolean add(Cesta element) {
         ODB odb = ODBFactory.open("Tienda.db");
-        odb.store(element);
+        odb.store(new Cesta(element.getId(), element.getNombre(), element.getCliente(), element.getCesta(), element.getTotal()));
         odb.close();
         return true;
     }
-    
-    /*public boolean addProduct(Cesta element){
-        listaProductos.add(element.);
-        
-        ODB odb = ODBFactory.open("Tienda.db");
-        odb.store(element.)
-    }*/
 
     @Override
     public List<Cesta> search(Cesta element) {
         ODB odb = ODBFactory.open("Tienda.db");
-        ICriterion criterio = new Or().add(Where.equal("nombre", element.getNombre())).add(Where.equal("id", element.getId()));
+        Or where = Where.or();
 
-        CriteriaQuery query = new CriteriaQuery(Cesta.class, criterio);
+        if (element.getId() != 0 && !"".equals(element.getId())) {
+            where.add(Where.equal("id", element.getId()));
+        }
+
+        if (element.getNombre() != null && !"".equals(element.getNombre())) {
+            where.add(Where.like("nombre", element.getNombre()));
+        }
+
+        if (element.getTotal() != 0 && !"".equals(element.getTotal())) {
+            where.add(Where.equal("total", element.getTotal()));
+        }
+
+        CriteriaQuery query = new CriteriaQuery(Cesta.class, where);
 
         Objects<Cesta> result = odb.getObjects(query);
 
         odb.close();
 
         return new ArrayList<>(result);
-    
+
     }
 
     @Override
@@ -70,26 +74,32 @@ public class CRUD_Cesta implements CRUD<Cesta>{
         ODB odb = ODBFactory.open("Tienda.db");
         CriteriaQuery query = new CriteriaQuery(Cesta.class, Where.equal("id", element.getId()));
 
-       Cesta resultado = (Cesta) odb.getObjects(query).getFirst();
-
+        Objects<Cesta> resultado = odb.getObjects(query);
         if (resultado != null) {
+            Cesta cesta = resultado.getFirst();
 
-            resultado.setNombre(element.getNombre());
-            resultado.setCesta(element.getCesta());
-            
-            odb.store(resultado);
+            cesta.setNombre(element.getNombre());
+            cesta.setCesta(element.getCesta());
+
+            odb.store(cesta);
+            odb.commit();
+            odb.close();
         } else {
-            System.out.println("Cesta no encontrado en la base de datos.");
+            odb.close();
+            return false;
         }
 
-        odb.close();
-        return true;    }
+        return true;
+    }
 
     @Override
     public boolean delete(Cesta element) {
         ODB odb = ODBFactory.open("Tienda.db");
-         odb.delete(element);
-         odb.close();
+         CriteriaQuery query = new CriteriaQuery(Cesta.class, Where.equal("id", element.getId()));
+        Objects<Cesta> resultado = odb.getObjects(query);
+        if (resultado != null)
+            odb.delete(resultado.getFirst());
+        odb.close();
         return true;
     }
 
@@ -105,5 +115,5 @@ public class CRUD_Cesta implements CRUD<Cesta>{
     public Iterator<Cesta> listAll() {
         return this.getCestas().iterator();
     }
- 
+
 }

@@ -18,7 +18,7 @@ public class CRUD_Productos implements CRUD<Producto> {
     @Override
     public boolean add(Producto element) {
         ODB odb = ODBFactory.open("Tienda.db");
-        odb.store(element);
+        odb.store(new Producto(element.getId(), element.getNombre(), element.getPrecio(), element.getStock()));
 
         odb.close();
 
@@ -28,10 +28,25 @@ public class CRUD_Productos implements CRUD<Producto> {
     @Override
     public List<Producto> search(Producto element) {
         ODB odb = ODBFactory.open("Tienda.db");
-        ICriterion criterio = new Or().add(Where.equal("nombre", element.getNombre())).add(Where.equal("id", element.getId()))
-                .add(Where.like("precio", String.valueOf(element.getPrecio()))).add(Where.like("stock", String.valueOf(element.getStock())));
+        Or where = Where.or();
 
-        CriteriaQuery query = new CriteriaQuery(Producto.class, criterio);
+        if (element.getId() != 0 && !"".equals(element.getId())) {
+            where.add(Where.equal("id", element.getId()));
+        }
+
+        if (element.getNombre() != null && !"".equals(element.getNombre())) {
+            where.add(Where.like("nombre", element.getNombre()));
+        }
+
+        if (element.getPrecio() != 0 && !"".equals(element.getPrecio())) {
+            where.add(Where.equal("precio", element.getPrecio()));
+        }
+
+        if (element.getStock() != 0 && !"".equals(element.getStock())) {
+            where.add(Where.equal("stock", element.getStock()));
+        }
+
+        CriteriaQuery query = new CriteriaQuery(Producto.class, where);
 
         Objects<Producto> result = odb.getObjects(query);
 
@@ -45,27 +60,33 @@ public class CRUD_Productos implements CRUD<Producto> {
         ODB odb = ODBFactory.open("Tienda.db");
         CriteriaQuery query = new CriteriaQuery(Producto.class, Where.equal("id", element.getId()));
 
-       Producto resultado = (Producto) odb.getObjects(query).getFirst();
-
+        Objects<Producto> resultado = odb.getObjects(query);
         if (resultado != null) {
+            Producto producto = resultado.getFirst();
+            producto.setNombre(element.getNombre());
+            producto.setPrecio(element.getPrecio());
+            producto.setStock(element.getStock());
 
-            resultado.setNombre(element.getNombre());
-            resultado.setPrecio(element.getPrecio());
-            resultado.setStock(element.getStock());
-
-            odb.store(resultado);
+            odb.store(producto);
+            odb.commit();
+            odb.close();
         } else {
-            System.out.println("Producto no encontrado en la base de datos.");
+            odb.close();
+            return false;
         }
 
-        odb.close();
         return true;
     }
 
     @Override
     public boolean delete(Producto element) {
+       
         ODB odb = ODBFactory.open("Tienda.db");
-        odb.delete(element);
+        CriteriaQuery query = new CriteriaQuery(Producto.class, Where.equal("id", element.getId()));
+        Objects<Producto> resultado = odb.getObjects(query);
+        if (resultado != null)
+            odb.delete(resultado.getFirst());
+        
         odb.close();
         return true;
     }
@@ -79,7 +100,7 @@ public class CRUD_Productos implements CRUD<Producto> {
 
     @Override
     public Iterator<Producto> listAll() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    return null;
     }
 
 }
