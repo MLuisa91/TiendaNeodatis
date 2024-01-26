@@ -14,6 +14,7 @@ import javax.swing.RowSorter.SortKey;
 import javax.swing.SortOrder;
 import javax.swing.table.TableRowSorter;
 import modelo.Producto;
+import modelo.Usuario;
 import utils.AccionesEnum;
 
 public class ListarProducto extends javax.swing.JDialog {
@@ -23,9 +24,11 @@ public class ListarProducto extends javax.swing.JDialog {
     private List<Producto> lista;
     private Producto producto;
     private CRUD_Productos crudProductos = new CRUD_Productos();
+    private Usuario usuario;
 
-    public ListarProducto(java.awt.Frame parent, boolean modal) {
+    public ListarProducto(Usuario usuario, java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        this.usuario = usuario;
         setLocationRelativeTo(null);
         initComponents();
 
@@ -171,7 +174,7 @@ public class ListarProducto extends javax.swing.JDialog {
     }//GEN-LAST:event_jButtonFiltrarActionPerformed
 
     private void jButtonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolverActionPerformed
-        BienvenidoUsuario bienvenido = new BienvenidoUsuario();
+        BienvenidoUsuario bienvenido = new BienvenidoUsuario(usuario);
         bienvenido.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jButtonVolverActionPerformed
@@ -214,7 +217,7 @@ public class ListarProducto extends javax.swing.JDialog {
         deleteItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                GestionProducto borrar = new GestionProducto(producto, AccionesEnum.BAJA);
+                GestionProducto borrar = new GestionProducto(usuario, producto, AccionesEnum.BAJA);
                 borrar.setVisible(true);
                 dispose();
             }
@@ -224,7 +227,7 @@ public class ListarProducto extends javax.swing.JDialog {
 
             @Override
             public void actionPerformed(ActionEvent ae) {
-                GestionProducto modificar = new GestionProducto(producto, AccionesEnum.MODIFICACION);
+                GestionProducto modificar = new GestionProducto(usuario, producto, AccionesEnum.MODIFICACION);
                 modificar.setVisible(true);
                 dispose();
             }

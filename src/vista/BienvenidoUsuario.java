@@ -1,32 +1,42 @@
 package vista;
 
-
-import java.util.List;
 import modelo.Administrador;
 import modelo.Usuario;
 import utils.AccionesEnum;
 
 public class BienvenidoUsuario extends javax.swing.JFrame {
 
-    private Usuario usuario;
-    
+    private final Usuario  usuario;
+
     public BienvenidoUsuario(Usuario usuario) {
         this.usuario = usuario;
+        
         setLocationRelativeTo(null);
         initComponents();
-        
-        if(usuario instanceof Administrador){
+
+        if (usuario instanceof Administrador) {
             jMenuCesta.setVisible(false);
             jMenuItemNuevaCesta.setVisible(false);
             jMenuItemListarCesta.setVisible(false);
-        }else{
-            jMenuCesta.setVisible(false);
+            jMenuProducto.setVisible(true);
+            jMenuItemAltaProducto.setVisible(true);
+            jMenuItemListarProdcuto.setVisible(true);
+            jMenuCliente.setVisible(true);
+            jMenuItemAlta.setVisible(true);
+            jMenuItemListar.setVisible(true);
+        } else {
+            jMenuCesta.setVisible(true);
+            jMenuItemNuevaCesta.setVisible(true);
+            jMenuItemListarCesta.setVisible(true);
+            jMenuCliente.setVisible(false);
             jMenuItemAlta.setVisible(false);
             jMenuItemListar.setVisible(false);
             jMenuProducto.setVisible(false);
             jMenuItemAltaProducto.setVisible(false);
             jMenuItemListarProdcuto.setVisible(false);
         }
+        
+        this.jLabelUsuario.setText(usuario.getNombre().concat(" ").concat(usuario.getApellidos()));
     }
 
     /**
@@ -176,14 +186,14 @@ public class BienvenidoUsuario extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonLogOutActionPerformed
 
     private void jMenuItemAltaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAltaActionPerformed
-        GestionCliente gestion = new GestionCliente(null, AccionesEnum.ALTA);
+        GestionCliente gestion = new GestionCliente(usuario, null, AccionesEnum.ALTA);
         gestion.setVisible(true);
         dispose();
 
     }//GEN-LAST:event_jMenuItemAltaActionPerformed
 
     private void jMenuItemListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemListarActionPerformed
-        ListarCliente listaClientes = new ListarCliente(null, true);
+        ListarCliente listaClientes = new ListarCliente(usuario, null, true);
         listaClientes.setVisible(true);
         dispose();
     }//GEN-LAST:event_jMenuItemListarActionPerformed
@@ -193,13 +203,13 @@ public class BienvenidoUsuario extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuClienteActionPerformed
 
     private void jMenuItemAltaProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAltaProductoActionPerformed
-        GestionProducto gestion = new GestionProducto(null,AccionesEnum.ALTA);
+        GestionProducto gestion = new GestionProducto(usuario, null, AccionesEnum.ALTA);
         gestion.setVisible(true);
         dispose();
     }//GEN-LAST:event_jMenuItemAltaProductoActionPerformed
 
     private void jMenuItemListarProdcutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemListarProdcutoActionPerformed
-        ListarProducto listaProductos = new ListarProducto(null, true);
+        ListarProducto listaProductos = new ListarProducto(usuario, null, true);
         listaProductos.setVisible(true);
         dispose();
     }//GEN-LAST:event_jMenuItemListarProdcutoActionPerformed
@@ -209,11 +219,11 @@ public class BienvenidoUsuario extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu2ActionPerformed
 
     private void jMenuItemNuevaCestaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemNuevaCestaActionPerformed
-        
+
         GestionCesta gestion = new GestionCesta();
         gestion.setVisible(true);
         dispose();
-        
+
     }//GEN-LAST:event_jMenuItemNuevaCestaActionPerformed
 
     private void jMenuItemListarCestaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemListarCestaActionPerformed
@@ -222,7 +232,6 @@ public class BienvenidoUsuario extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_jMenuItemListarCestaActionPerformed
 
-  
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonLogOut;

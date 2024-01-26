@@ -1,6 +1,5 @@
 package vista;
 
-import modelo.Administrador;
 import modelo.Usuario;
 import org.neodatis.odb.ODB;
 import org.neodatis.odb.ODBFactory;
@@ -10,10 +9,10 @@ public class Main {
 
     public static void main(String[] args) {
 
-        ODB odb = null;
+       /* ODB odb = null;
         try {
             odb = ODBFactory.open("Tienda.db");
-            Usuario admin = new Administrador(Boolean.TRUE, "123456", "Maria", "Perez Perez", "Don Benito");
+            Usuario admin = new Usuario(Boolean.TRUE, "123456", "Maria", "Perez Perez", "Don Benito");
 
             odb.store(admin);
 
@@ -23,7 +22,7 @@ public class Main {
             if (odb != null && !odb.isClosed()) {
                 odb.close();
             }
-        }
+        }*/
 
         Login log = new Login();
         log.setVisible(true);

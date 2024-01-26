@@ -7,9 +7,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import modelo.Cliente;
+import modelo.Usuario;
 import utils.AccionesEnum;
 
 public class ListarCliente extends javax.swing.JDialog {
@@ -19,13 +21,14 @@ public class ListarCliente extends javax.swing.JDialog {
     private CRUD_Clientes crudClientes = new CRUD_Clientes();
     private Cliente u;
     private Cliente cliente = null;
+    private Usuario usuario;
 
-    public ListarCliente(java.awt.Frame parent, boolean modal) {
+    public ListarCliente(Usuario usuario, java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        this.lista = crudClientes.getClientes();
+        this.lista = crudClientes.getClientes().stream().map(e -> new Cliente(e.getAdministrador(),e.getDni(),e.getNombre(),e.getApellidos(),e.getDireccion())).collect(Collectors.toList());
+        this.usuario = usuario;
         setLocationRelativeTo(null);
         initComponents();
-
         inicializarTabla();
         //ordenarTabla();
     }
@@ -166,7 +169,7 @@ public class ListarCliente extends javax.swing.JDialog {
     }//GEN-LAST:event_jButtonFiltrarActionPerformed
 
     private void jButtonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolverActionPerformed
-        BienvenidoUsuario bienvenido = new BienvenidoUsuario();
+        BienvenidoUsuario bienvenido = new BienvenidoUsuario(usuario);
         bienvenido.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jButtonVolverActionPerformed
@@ -214,7 +217,7 @@ public class ListarCliente extends javax.swing.JDialog {
         deleteItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                GestionCliente borrar = new GestionCliente(cliente, AccionesEnum.BAJA);
+                GestionCliente borrar = new GestionCliente(usuario, cliente, AccionesEnum.BAJA);
                 borrar.setVisible(true);
                 dispose();
             }
@@ -224,7 +227,7 @@ public class ListarCliente extends javax.swing.JDialog {
 
             @Override
             public void actionPerformed(ActionEvent ae) {
-                GestionCliente modificar = new GestionCliente(cliente, AccionesEnum.MODIFICACION);
+                GestionCliente modificar = new GestionCliente(usuario, cliente, AccionesEnum.MODIFICACION);
                 modificar.setVisible(true);
                 dispose();
             }
@@ -237,12 +240,12 @@ public class ListarCliente extends javax.swing.JDialog {
 
     private void aplicarFiltros() {
         String nombre = jTextFieldNombre.getText();
-        String primerApellido = jTextFieldApellidos.getText();
+        String apellidos = jTextFieldApellidos.getText();
         String direccion = jTextFieldDireccion.getText();
         String dni = jTextFieldDni.getText();
 
 
-        Cliente c = new Cliente(false, dni, nombre, direccion, direccion);
+        Cliente c = new Cliente(false, dni, nombre, apellidos, direccion);
 
         List<Cliente> filtrados = crudClientes.search(c);
 

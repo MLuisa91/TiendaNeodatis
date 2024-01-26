@@ -6,13 +6,12 @@
 package vista;
 
 import controlador.CRUD_Clientes;
-import java.util.List;
-import modelo.Administrador;
+import javax.swing.JOptionPane;
 import modelo.Usuario;
 
 public class Login extends javax.swing.JFrame {
 
-    private CRUD_Clientes crudClientes = new CRUD_Clientes();
+    private final CRUD_Clientes crudClientes = new CRUD_Clientes();
 
     public Login() {
         setLocationRelativeTo(null);
@@ -113,10 +112,12 @@ public class Login extends javax.swing.JFrame {
         Usuario user = crudClientes.searchByDni(u);
 
         if (user != null) {
-            BienvenidoUsuario bienvenida = new BienvenidoUsuario(u);
+            BienvenidoUsuario bienvenida = new BienvenidoUsuario(user);
             bienvenida.setVisible(true);
             this.dispose();
-        }
+        }else{
+            JOptionPane.showMessageDialog(this, "El usuario no existe en la aplicación, contacte con el Administrador.");
+        } 
 
 
     }//GEN-LAST:event_jButtonLoginActionPerformed

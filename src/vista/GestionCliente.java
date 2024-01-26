@@ -8,6 +8,7 @@ import controlador.CRUD_Clientes;
 import java.util.List;
 import javax.swing.JOptionPane;
 import modelo.Cliente;
+import modelo.Usuario;
 import utils.AccionesEnum;
 
 /**
@@ -19,8 +20,10 @@ public class GestionCliente extends javax.swing.JFrame {
     private AccionesEnum accion;
     private Cliente cliente;
     private CRUD_Clientes crudClientes = new CRUD_Clientes();
+    private Usuario usuario;
 
-    public GestionCliente(Cliente cliente, AccionesEnum accion) {
+    public GestionCliente(Usuario usuario, Cliente cliente, AccionesEnum accion) {
+        this.usuario = usuario;
         this.cliente = cliente;
         this.accion = accion;
         initComponents();
@@ -177,11 +180,11 @@ public class GestionCliente extends javax.swing.JFrame {
 
     private void jButtonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolverActionPerformed
         if (AccionesEnum.ALTA.equals(accion)) {
-            BienvenidoUsuario hola = new BienvenidoUsuario();
+            BienvenidoUsuario hola = new BienvenidoUsuario(usuario);
             dispose();
             hola.setVisible(true);
         } else {
-            ListarCliente listarCliente = new ListarCliente(this, true);
+            ListarCliente listarCliente = new ListarCliente(usuario, this, true);
             dispose();
             listarCliente.setVisible(true);
 
@@ -200,7 +203,7 @@ public class GestionCliente extends javax.swing.JFrame {
             if (misClientes.isEmpty()) {
                 if (cliente != null && crudClientes.add(cliente)) {
                     JOptionPane.showMessageDialog(this, "Operación realizada correctamente.");
-                    BienvenidoUsuario hola = new BienvenidoUsuario();
+                    BienvenidoUsuario hola = new BienvenidoUsuario(usuario);
                     dispose();
                     hola.setVisible(true);
                 } else {
@@ -213,7 +216,7 @@ public class GestionCliente extends javax.swing.JFrame {
         if (AccionesEnum.BAJA.equals(accion)) {
             if (cliente != null && crudClientes.delete(cliente)) {
                 JOptionPane.showMessageDialog(this, "Operación realizada correctamente.");
-                ListarCliente listarCliente = new ListarCliente(this, true);
+                ListarCliente listarCliente = new ListarCliente(usuario, this, true);
                 dispose();
                 listarCliente.setVisible(true);
             } else {
@@ -225,7 +228,7 @@ public class GestionCliente extends javax.swing.JFrame {
             Cliente cliente = recogerDatos();
             if (cliente != null && crudClientes.update(cliente)) {
                 JOptionPane.showMessageDialog(this, "Operación realizada correctamente.");
-                ListarCliente listarCliente = new ListarCliente(this, true);
+                ListarCliente listarCliente = new ListarCliente(usuario, this, true);
                 dispose();
                 listarCliente.setVisible(true);
             } else {
@@ -269,6 +272,8 @@ public class GestionCliente extends javax.swing.JFrame {
         jTextFieldApellidos.setText(cliente.getApellidos());
         jTextFieldDireccion.setText(cliente.getDireccion());
         jTextFieldDni.setText(cliente.getDni());
+        // DNI lo tenemos establecido como primary key así que se tiene que mostrar deshabilitado
+        jTextFieldDni.setEnabled(false);
 
     }
 

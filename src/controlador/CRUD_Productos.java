@@ -45,16 +45,15 @@ public class CRUD_Productos implements CRUD<Producto> {
         ODB odb = ODBFactory.open("Tienda.db");
         CriteriaQuery query = new CriteriaQuery(Producto.class, Where.equal("id", element.getId()));
 
-        Objects<Producto> resultados = odb.getObjects(query);
+       Producto resultado = (Producto) odb.getObjects(query).getFirst();
 
-        if (resultados.hasNext()) {
-            Producto productoExistente = resultados.next();
+        if (resultado != null) {
 
-            productoExistente.setNombre(element.getNombre());
-            productoExistente.setPrecio(element.getPrecio());
-            productoExistente.setStock(element.getStock());
+            resultado.setNombre(element.getNombre());
+            resultado.setPrecio(element.getPrecio());
+            resultado.setStock(element.getStock());
 
-            odb.store(productoExistente);
+            odb.store(resultado);
         } else {
             System.out.println("Producto no encontrado en la base de datos.");
         }
@@ -71,17 +70,16 @@ public class CRUD_Productos implements CRUD<Producto> {
         return true;
     }
 
-    public List<Producto> getUsuarios() {
+    public List<Producto> getProductos() {
         ODB odb = ODBFactory.open("Tienda.db");
         Objects<Producto> lista = odb.getObjects(Producto.class);
         odb.close();
         return (List<Producto>) lista;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public Iterator<Producto> listAll() {
-        return this.getUsuarios().iterator();
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

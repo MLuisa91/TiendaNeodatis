@@ -8,6 +8,7 @@ import controlador.CRUD_Productos;
 import java.util.List;
 import javax.swing.JOptionPane;
 import modelo.Producto;
+import modelo.Usuario;
 import utils.AccionesEnum;
 
 /**
@@ -19,8 +20,9 @@ public class GestionProducto extends javax.swing.JFrame {
     private AccionesEnum accion;
     private Producto producto;
     private CRUD_Productos crudProductos = new CRUD_Productos();
+    private Usuario usuario;
    
-    public GestionProducto(Producto producto, AccionesEnum accion) {
+    public GestionProducto(Usuario usuario, Producto producto, AccionesEnum accion) {
         setLocationRelativeTo(null);
         this.producto = producto;
         this.accion = accion;
@@ -167,11 +169,11 @@ public class GestionProducto extends javax.swing.JFrame {
 
     private void jButtonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolverActionPerformed
         if (AccionesEnum.ALTA.equals(accion)) {
-            BienvenidoUsuario hola = new BienvenidoUsuario();
+            BienvenidoUsuario hola = new BienvenidoUsuario(usuario);
             dispose();
             hola.setVisible(true);
         } else {
-            ListarProducto listarProducto = new ListarProducto(this, true);
+            ListarProducto listarProducto = new ListarProducto(usuario, this, true);
             dispose();
             listarProducto.setVisible(true);
 
@@ -190,7 +192,7 @@ public class GestionProducto extends javax.swing.JFrame {
             if (misProductos.isEmpty()) {
                 if (producto != null && crudProductos.add(producto)) {
                     JOptionPane.showMessageDialog(this, "Operación realizada correctamente.");
-                   BienvenidoUsuario hola = new BienvenidoUsuario();
+                   BienvenidoUsuario hola = new BienvenidoUsuario(usuario);
                     dispose();
                     hola.setVisible(true);
                 } else {
@@ -203,7 +205,7 @@ public class GestionProducto extends javax.swing.JFrame {
         if (AccionesEnum.BAJA.equals(accion)) {
             if (producto != null && crudProductos.delete(producto)) {
                 JOptionPane.showMessageDialog(this, "Operación realizada correctamente.");
-                ListarProducto listarProducto = new ListarProducto(this, true);
+                ListarProducto listarProducto = new ListarProducto(usuario, this, true);
                 dispose();
                 listarProducto.setVisible(true);
             } else {
@@ -215,7 +217,7 @@ public class GestionProducto extends javax.swing.JFrame {
             Producto producto = recogerDatos();
             if (producto != null && crudProductos.update(producto)) {
                 JOptionPane.showMessageDialog(this, "Operación realizada correctamente.");
-                ListarProducto listarProducto = new ListarProducto(this, true);
+                ListarProducto listarProducto = new ListarProducto(usuario, this, true);
                 dispose();
                 listarProducto.setVisible(true);
             } else {
