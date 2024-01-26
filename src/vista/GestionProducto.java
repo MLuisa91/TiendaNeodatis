@@ -268,7 +268,7 @@ public class GestionProducto extends javax.swing.JFrame {
         String errores = "";
         Producto producto = null;
         Integer id = Integer.parseInt(jTextFieldId.getText());
-        if (id == 0) {
+        if (id == null) {
             errores = errores + "- El campo id es obligatorio.\n";
             correcto = false;
         }
@@ -278,13 +278,13 @@ public class GestionProducto extends javax.swing.JFrame {
             correcto = false;
         }
         Float precio = Float.parseFloat(jTextFieldPrecio.getText());
-        if (precio == 0) {
+        if (precio == null) {
             errores = errores + "- El campo precio es obligatorio.\n";
             correcto = false;
         }
 
         Integer stock = Integer.parseInt(jTextFieldStock.getText());
-        if (stock == 0) {
+        if (stock == null) {
             errores = errores + "- El campo stock es obligatorio.\n";
             correcto = false;
         }

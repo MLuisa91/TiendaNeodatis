@@ -7,17 +7,32 @@
 package vista;
 
 import componentes.TablaCesta;
+import controlador.CRUD_Cesta;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.List;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
+import modelo.Cesta;
 import modelo.Usuario;
 
 public class ListarCesta extends javax.swing.JFrame {
 
     private Usuario usuario;
     private TablaCesta modeloTabla;
+    private CRUD_Cesta crudCesta = new CRUD_Cesta();
+    private Cesta cesta;
+    private List<Cesta> lista;
     
     public ListarCesta(Usuario usuario) {
         this.usuario = usuario;
+        this.lista = crudCesta.getCestas();
         
         initComponents();
+        inicializarTabla();
     }
 
     /**
@@ -132,7 +147,7 @@ public class ListarCesta extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFiltrarActionPerformed
-        //aplicarFiltros();
+        aplicarFiltros();
     }//GEN-LAST:event_jButtonFiltrarActionPerformed
 
     private void jButtonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolverActionPerformed
@@ -156,4 +171,57 @@ public class ListarCesta extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldNombre;
     private javax.swing.JTextField jTextFieldTotal;
     // End of variables declaration//GEN-END:variables
+
+    private void aplicarFiltros() {
+        String id = jTextFieldID.getText();
+        String total = jTextFieldTotal.getText();
+        String nombre = jTextFieldNombre.getText();
+        Integer idEntero = null;
+        Float totalFloat = null;
+        if(!id.isEmpty())
+                idEntero = Integer.parseInt(id);
+        
+        if (!total.isEmpty())
+             totalFloat = Float.parseFloat(total);
+        
+        Cesta cesta = new Cesta(idEntero, nombre, null, null, totalFloat);
+        
+        List<Cesta> filtrados = crudCesta.search(cesta);
+
+        modeloTabla = new TablaCesta(filtrados);
+        this.jTable1.setModel(modeloTabla);
+        
+    }
+    
+    private void inicializarTabla() {
+        modeloTabla = new TablaCesta(lista);
+        this.jTable1.setModel(modeloTabla);
+
+        jTable1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 1) {
+                    int filaSeleccionada = jTable1.getSelectedRow();
+                    if (filaSeleccionada != -1) {
+                        cesta = lista.get(filaSeleccionada);
+                    }
+                }
+            }
+
+        });
+
+        final JPopupMenu popupMenu = new JPopupMenu();
+        JMenuItem deleteItem = new JMenuItem("Borrar");
+        deleteItem.addActionListener(new ActionListener() {
+            
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                JOptionPane.showMessageDialog(ListarCesta.this, "¿Desea borrar la cesta?");
+                crudCesta.delete(cesta);
+            }
+        });
+        
+        popupMenu.add(deleteItem);
+        jTable1.setComponentPopupMenu(popupMenu);
+    }
 }
