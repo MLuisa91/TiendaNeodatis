@@ -5,13 +5,13 @@
  */
 package vista;
 
-import controlador.CRUD_Clientes;
+import controlador.CRUD_Usuario;
 import javax.swing.JOptionPane;
 import modelo.Usuario;
 
 public class Login extends javax.swing.JFrame {
 
-    private final CRUD_Clientes crudClientes = new CRUD_Clientes();
+    private final CRUD_Usuario crudClientes = new CRUD_Usuario();
 
     public Login() {
         setLocationRelativeTo(null);

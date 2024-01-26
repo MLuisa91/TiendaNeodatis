@@ -1,7 +1,7 @@
 package vista;
 
 import componentes.TablaClientes;
-import controlador.CRUD_Clientes;
+import controlador.CRUD_Usuario;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -17,8 +17,8 @@ import utils.AccionesEnum;
 public class ListarCliente extends javax.swing.JDialog {
 
     private TablaClientes modeloTabla;
-    private List<Cliente> lista;
-    private CRUD_Clientes crudClientes = new CRUD_Clientes();
+    private List<Usuario> lista;
+    private CRUD_Usuario crudClientes = new CRUD_Usuario();
     private Cliente u;
     private Cliente cliente = null;
     private Usuario usuario;
@@ -205,7 +205,7 @@ public class ListarCliente extends javax.swing.JDialog {
                 if (e.getClickCount() == 1) {
                     int filaSeleccionada = jTable.getSelectedRow();
                     if (filaSeleccionada != -1) {
-                        cliente = lista.get(filaSeleccionada);
+                        cliente = (Cliente) lista.get(filaSeleccionada);
                     }
                 }
             }
@@ -247,7 +247,7 @@ public class ListarCliente extends javax.swing.JDialog {
 
         Cliente c = new Cliente(false, dni, nombre, apellidos, direccion);
 
-        List<Cliente> filtrados = crudClientes.search(c);
+        List<Usuario> filtrados = crudClientes.search(c);
 
         modeloTabla = new TablaClientes(filtrados);
         this.jTable.setModel(modeloTabla);

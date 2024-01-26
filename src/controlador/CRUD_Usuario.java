@@ -14,10 +14,10 @@ import org.neodatis.odb.core.query.criteria.Or;
 import org.neodatis.odb.core.query.criteria.Where;
 import org.neodatis.odb.impl.core.query.criteria.CriteriaQuery;
 
-public class CRUD_Clientes implements CRUD<Cliente> {
+public class CRUD_Usuario implements CRUD<Usuario> {
 
     @Override
-    public boolean add(Cliente element) {
+    public boolean add(Usuario element) {
         ODB odb = ODBFactory.open("Tienda.db");
         odb.store(new Usuario(element.getAdministrador(), element.getDni(), element.getNombre(), element.getApellidos(), element.getDireccion()));
 
@@ -27,7 +27,7 @@ public class CRUD_Clientes implements CRUD<Cliente> {
     }
 
     @Override
-    public List<Cliente> search(Cliente element) {
+    public List<Usuario> search(Usuario element) {
         ODB odb = ODBFactory.open("Tienda.db");
         Or where = Where.or();
 
@@ -47,9 +47,9 @@ public class CRUD_Clientes implements CRUD<Cliente> {
             where.add(Where.equal("dni", element.getDni()));
         }
 
-        CriteriaQuery query = new CriteriaQuery(Cliente.class, where);
+        CriteriaQuery query = new CriteriaQuery(Usuario.class, where);
 
-        Objects<Cliente> result = odb.getObjects(query);
+        Objects<Usuario> result = odb.getObjects(query);
 
         odb.close();
 
@@ -57,7 +57,7 @@ public class CRUD_Clientes implements CRUD<Cliente> {
     }
 
     @Override
-    public boolean update(Cliente element) {
+    public boolean update(Usuario element) {
         ODB odb = ODBFactory.open("Tienda.db");
         CriteriaQuery query = new CriteriaQuery(Usuario.class, Where.equal("dni", element.getDni()));
         Objects<Usuario> resultado = odb.getObjects(query);
@@ -78,7 +78,7 @@ public class CRUD_Clientes implements CRUD<Cliente> {
     }
 
     @Override
-    public boolean delete(Cliente element) {
+    public boolean delete(Usuario element) {
         /* tenemos dados de alta en base de datos Usuarios, que serán o clientes o Administradores
          Para borrar este cliente, primero tendremos que buscarlo como usuario y borrar el usuario no el cliente
          */
@@ -102,7 +102,7 @@ public class CRUD_Clientes implements CRUD<Cliente> {
 
     @SuppressWarnings("unchecked")
     @Override
-    public Iterator<Cliente> listAll() {
+    public Iterator<Usuario> listAll() {
         return null;
     }
 

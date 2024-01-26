@@ -4,25 +4,26 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 import modelo.Cliente;
+import modelo.Usuario;
 
 public class TablaClientes extends AbstractTableModel {
 
-    private List<Cliente> lista;
+    private List<Usuario> lista;
     private String nombreColumnas[] = {"Nombre", "Apellidos", "Direccion", "DNI"};
 
-    public TablaClientes(List<Cliente> lista) {
+    public TablaClientes(List<Usuario> lista) {
         this.lista = lista;
     }
 
     public TablaClientes() {
-        this.lista = new ArrayList<Cliente>();
+        this.lista = new ArrayList<Usuario>();
     }
 
-    public List<Cliente> getLista() {
+    public List<Usuario> getLista() {
         return lista;
     }
 
-    public void setLista(List<Cliente> lista) {
+    public void setLista(List<Usuario> lista) {
         this.lista = lista;
     }
 
@@ -64,7 +65,7 @@ public class TablaClientes extends AbstractTableModel {
         return nombreColumnas[column];
     }
     
-    public Cliente remove (int index){
+    public Usuario remove (int index){
         try{
             return lista.remove(index);
         }finally{

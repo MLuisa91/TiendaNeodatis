@@ -4,7 +4,7 @@
  */
 package vista;
 
-import controlador.CRUD_Clientes;
+import controlador.CRUD_Usuario;
 import java.util.List;
 import javax.swing.JOptionPane;
 import modelo.Cliente;
@@ -19,7 +19,7 @@ public class GestionCliente extends javax.swing.JFrame {
 
     private AccionesEnum accion;
     private Cliente cliente;
-    private CRUD_Clientes crudClientes = new CRUD_Clientes();
+    private CRUD_Usuario crudClientes = new CRUD_Usuario();
     private Usuario usuario;
 
     public GestionCliente(Usuario usuario, Cliente cliente, AccionesEnum accion) {
@@ -199,7 +199,7 @@ public class GestionCliente extends javax.swing.JFrame {
             Cliente cliente = recogerDatos();
 
             String dni = jTextFieldDni.getText();
-            List<Cliente> misClientes = crudClientes.search(new Cliente(null, dni, null, null, null));
+            List<Usuario> misClientes = crudClientes.search(new Cliente(null, dni, null, null, null));
             if (misClientes.isEmpty()) {
                 if (cliente != null && crudClientes.add(cliente)) {
                     JOptionPane.showMessageDialog(this, "Operación realizada correctamente.");
@@ -255,13 +255,38 @@ public class GestionCliente extends javax.swing.JFrame {
 
     private Cliente recogerDatos() {
         Cliente cliente = null;
+        boolean correcto = true;
+        String errores = "";
+        
         String nombre = jTextFieldNombre.getText();
-
+        if(nombre.isEmpty()){
+             errores = errores + "- El campo nombre es obligatorio.\n";
+             correcto = false;
+        }
+               
         String apellidos = jTextFieldApellidos.getText();
+        if(apellidos.isEmpty()){
+             errores = errores + "- El campo apellidos es obligatorio.\n";
+             correcto = false;
+        }
         String direccion = jTextFieldDireccion.getText();
+        if(direccion.isEmpty()){
+             errores = errores + "- El campo dirección es obligatorio.\n";
+             correcto = false;
+        }
         String dni = jTextFieldDni.getText();
+        if(dni.isEmpty()){
+             errores = errores + "- El campo dni es obligatorio.\n";
+             correcto = false;
+        }
+        
+        if(correcto == true){
+            cliente = new Cliente(false, dni, nombre, apellidos, direccion);
+        }else{
+            JOptionPane.showMessageDialog(this, errores);
+        }
 
-        cliente = new Cliente(false, dni, nombre, apellidos, direccion);
+       
 
         return cliente;
     }

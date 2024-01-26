@@ -28,6 +28,7 @@ public class ListarProducto extends javax.swing.JDialog {
 
     public ListarProducto(Usuario usuario, java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        this.lista = crudProductos.getProductos();
         this.usuario = usuario;
         setLocationRelativeTo(null);
         initComponents();

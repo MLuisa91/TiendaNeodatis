@@ -16,19 +16,20 @@ import utils.AccionesEnum;
  * @author Prueba
  */
 public class GestionProducto extends javax.swing.JFrame {
-    
+
     private AccionesEnum accion;
     private Producto producto;
     private CRUD_Productos crudProductos = new CRUD_Productos();
     private Usuario usuario;
-   
+
     public GestionProducto(Usuario usuario, Producto producto, AccionesEnum accion) {
         setLocationRelativeTo(null);
         this.producto = producto;
+        this.usuario = usuario;
         this.accion = accion;
-        
+
         initComponents();
-        
+
         if (AccionesEnum.BAJA.equals(accion)) {
             mostrarDatosDeshabilitados(producto);
         } else if (AccionesEnum.MODIFICACION.equals(accion)) {
@@ -192,7 +193,7 @@ public class GestionProducto extends javax.swing.JFrame {
             if (misProductos.isEmpty()) {
                 if (producto != null && crudProductos.add(producto)) {
                     JOptionPane.showMessageDialog(this, "Operación realizada correctamente.");
-                   BienvenidoUsuario hola = new BienvenidoUsuario(usuario);
+                    BienvenidoUsuario hola = new BienvenidoUsuario(usuario);
                     dispose();
                     hola.setVisible(true);
                 } else {
@@ -259,19 +260,41 @@ public class GestionProducto extends javax.swing.JFrame {
         jTextFieldId.setText(String.valueOf(producto.getId()));
         jTextFieldPrecio.setText(String.valueOf(producto.getPrecio()));
         jTextFieldStock.setText(String.valueOf(producto.getStock()));
-        
+
     }
 
     private Producto recogerDatos() {
-
+        boolean correcto = true;
+        String errores = "";
         Producto producto = null;
         int id = Integer.parseInt(jTextFieldId.getText());
+        if (id == 0) {
+            errores = errores + "- El campo id es obligatorio.\n";
+            correcto = false;
+        }
         String nombre = jTextFieldNombre.getText();
+        if (nombre.isEmpty()) {
+            errores = errores + "- El campo nombre es obligatorio.\n";
+            correcto = false;
+        }
         float precio = Float.parseFloat(jTextFieldPrecio.getText());
+        if (precio == 0) {
+            errores = errores + "- El campo precio es obligatorio.\n";
+            correcto = false;
+        }
+
         int stock = Integer.parseInt(jTextFieldStock.getText());
-        
-        producto = new Producto(id, nombre, precio, stock);
-        
+        if (stock == 0) {
+            errores = errores + "- El campo stock es obligatorio.\n";
+            correcto = false;
+        }
+
+        if (correcto == true) {
+            producto = new Producto(id, nombre, precio, stock);
+        }else{
+            JOptionPane.showMessageDialog(this, errores);
+        }
+
         return producto;
     }
 }
