@@ -8,7 +8,6 @@ import modelo.Producto;
 import org.neodatis.odb.ODB;
 import org.neodatis.odb.ODBFactory;
 import org.neodatis.odb.Objects;
-import org.neodatis.odb.core.query.criteria.ICriterion;
 import org.neodatis.odb.core.query.criteria.Or;
 import org.neodatis.odb.core.query.criteria.Where;
 import org.neodatis.odb.impl.core.query.criteria.CriteriaQuery;
@@ -30,7 +29,7 @@ public class CRUD_Productos implements CRUD<Producto> {
         ODB odb = ODBFactory.open("Tienda.db");
         Or where = Where.or();
 
-        if (element.getId() != 0 && !"".equals(element.getId())) {
+        if (element.getId() != null && !"".equals(element.getId())) {
             where.add(Where.equal("id", element.getId()));
         }
 
@@ -38,11 +37,11 @@ public class CRUD_Productos implements CRUD<Producto> {
             where.add(Where.like("nombre", element.getNombre()));
         }
 
-        if (element.getPrecio() != 0 && !"".equals(element.getPrecio())) {
+        if (element.getPrecio() != null && !"".equals(element.getPrecio())) {
             where.add(Where.equal("precio", element.getPrecio()));
         }
 
-        if (element.getStock() != 0 && !"".equals(element.getStock())) {
+        if (element.getStock() != null && !"".equals(element.getStock())) {
             where.add(Where.equal("stock", element.getStock()));
         }
 

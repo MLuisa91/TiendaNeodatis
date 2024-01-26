@@ -220,7 +220,7 @@ public class BienvenidoUsuario extends javax.swing.JFrame {
 
     private void jMenuItemNuevaCestaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemNuevaCestaActionPerformed
 
-        GestionCesta gestion = new GestionCesta();
+        GestionCesta gestion = new GestionCesta(usuario, AccionesEnum.ALTA);
         gestion.setVisible(true);
         dispose();
 

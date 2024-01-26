@@ -239,22 +239,25 @@ public class ListarProducto extends javax.swing.JDialog {
 
     }
 
-    /*private void ordenarTabla() {
-     this.jTable1.setAutoCreateRowSorter(true);
-     sorter = new TableRowSorter<>(this.modeloTabla);
-     this.jTable1.setRowSorter(sorter);
-     ArrayList<SortKey> sortKeys = new ArrayList<>();
-     sortKeys.add(new SortKey(0, SortOrder.ASCENDING));
-     sortKeys.add(new SortKey(0, SortOrder.DESCENDING));
-     sorter.setSortKeys(sortKeys);
-     }*/
     private void aplicarFiltros() {
-        int id = Integer.parseInt(jTextFieldId.getText());
+        String id = jTextFieldId.getText();
+        String precio = jTextFieldPrecio.getText();
+        String stock = jTextFieldStock.getText();
         String nombre = jTextFieldNombre.getText();
-        float precio = Float.parseFloat(jTextFieldPrecio.getText());
-        int stock = Integer.parseInt(jTextFieldStock.getText());
+        Integer idEntero = null;
+        Float precioFloat = null;
+        Integer stockEntero = null;
+        
+        if(!id.isEmpty())
+                idEntero = Integer.parseInt(id);
+        
+        if (!precio.isEmpty())
+             precioFloat = Float.parseFloat(precio);
+        
+        if(!stock.isEmpty())
+            stockEntero = Integer.parseInt(stock);
 
-        Producto p = new Producto(id, nombre, precio, stock);
+        Producto p = new Producto(idEntero, nombre, precioFloat, stockEntero);
 
         List<Producto> filtrados = crudProductos.search(p);
 

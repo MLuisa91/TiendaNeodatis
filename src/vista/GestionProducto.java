@@ -188,8 +188,8 @@ public class GestionProducto extends javax.swing.JFrame {
         if (AccionesEnum.ALTA.equals(accion)) {
             Producto producto = recogerDatos();
 
-            int numero = Integer.parseInt(jTextFieldId.getText());
-            List<Producto> misProductos = crudProductos.search(new Producto(numero, null, 0, 0));
+            Integer numero = Integer.parseInt(jTextFieldId.getText());
+            List<Producto> misProductos = crudProductos.search(new Producto(numero, null, null, null));
             if (misProductos.isEmpty()) {
                 if (producto != null && crudProductos.add(producto)) {
                     JOptionPane.showMessageDialog(this, "Operación realizada correctamente.");
@@ -267,7 +267,7 @@ public class GestionProducto extends javax.swing.JFrame {
         boolean correcto = true;
         String errores = "";
         Producto producto = null;
-        int id = Integer.parseInt(jTextFieldId.getText());
+        Integer id = Integer.parseInt(jTextFieldId.getText());
         if (id == 0) {
             errores = errores + "- El campo id es obligatorio.\n";
             correcto = false;
@@ -277,13 +277,13 @@ public class GestionProducto extends javax.swing.JFrame {
             errores = errores + "- El campo nombre es obligatorio.\n";
             correcto = false;
         }
-        float precio = Float.parseFloat(jTextFieldPrecio.getText());
+        Float precio = Float.parseFloat(jTextFieldPrecio.getText());
         if (precio == 0) {
             errores = errores + "- El campo precio es obligatorio.\n";
             correcto = false;
         }
 
-        int stock = Integer.parseInt(jTextFieldStock.getText());
+        Integer stock = Integer.parseInt(jTextFieldStock.getText());
         if (stock == 0) {
             errores = errores + "- El campo stock es obligatorio.\n";
             correcto = false;

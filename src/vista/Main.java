@@ -9,7 +9,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-       /* ODB odb = null;
+        /*ODB odb = null;
         try {
             odb = ODBFactory.open("Tienda.db");
             Usuario admin = new Usuario(Boolean.TRUE, "123456", "Maria", "Perez Perez", "Don Benito");

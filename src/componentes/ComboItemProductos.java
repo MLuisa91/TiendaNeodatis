@@ -8,9 +8,9 @@ public class ComboItemProductos {
     private String valor;
     private Producto producto;
 
-    public ComboItemProductos(Integer clave, String valor, Producto producto) {
-        this.clave = clave;
-        this.valor = valor;
+    public ComboItemProductos(Producto producto) {
+        this.clave = producto.getId();
+        this.valor = valor.concat(" (").concat(String.valueOf(producto.getPrecio())).concat(")");
         this.producto = producto;
     }
 
