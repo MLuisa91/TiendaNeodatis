@@ -10,7 +10,7 @@ public class ComboItemProductos {
 
     public ComboItemProductos(Producto producto) {
         this.clave = producto.getId();
-        this.valor = valor.concat(" (").concat(String.valueOf(producto.getPrecio())).concat(")");
+        this.valor = producto.getNombre().concat(" (").concat(String.valueOf(producto.getPrecio())).concat("€)");
         this.producto = producto;
     }
 

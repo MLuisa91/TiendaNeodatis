@@ -13,6 +13,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import javax.swing.JOptionPane;
 import modelo.Cesta;
 import modelo.Cliente;
@@ -37,6 +39,7 @@ public class GestionCesta extends javax.swing.JFrame {
         this.accion = accion;
         this.lista = new ArrayList<>();
         initComponents();
+        cargarComboProducto();
         jTextFieldTotal.setText(String.valueOf(0));
         inicializarTabla();
 
@@ -66,8 +69,6 @@ public class GestionCesta extends javax.swing.JFrame {
         jTextFieldNombre = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jComboBoxProductos.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jButtonAgregar.setText("Agregar");
         jButtonAgregar.addActionListener(new java.awt.event.ActionListener() {
@@ -99,6 +100,11 @@ public class GestionCesta extends javax.swing.JFrame {
         jLabel1.setText("Total: ");
 
         jButtonEliminar.setText("Eliminar");
+        jButtonEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEliminarActionPerformed(evt);
+            }
+        });
 
         jLabelNombre.setText("Producto: ");
 
@@ -178,13 +184,14 @@ public class GestionCesta extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregarActionPerformed
-        Producto productoSeleccionado = (Producto) jComboBoxProductos.getSelectedItem();
+        ComboItemProductos productoSeleccionado = (ComboItemProductos) jComboBoxProductos.getSelectedItem();
 
-        lista.add(productoSeleccionado);
+        lista.add(productoSeleccionado.getProducto());
+        inicializarTabla();
 
         Float total = Float.parseFloat(jTextFieldTotal.getText());
 
-        total = total + producto.getPrecio();
+        total = total + productoSeleccionado.getProducto().getPrecio();
 
         jTextFieldTotal.setText(String.valueOf(total));
 
@@ -207,7 +214,26 @@ public class GestionCesta extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(this, "Ya hay un cesta con el mismo id.");
         }
+        
+        Map<Integer, List<Producto>> productoMap = lista.stream().collect(Collectors.groupingBy(Producto::getId));
+        
+        for (Map.Entry<Integer, List<Producto>> entry : productoMap.entrySet()) {
+            Integer integer = entry.getKey();
+            List<Producto> cantidadStock = entry.getValue();
+            
+            Integer cantidadRestar = cantidadStock.size();
+            Integer nuevoStock = producto.getStock() - cantidadRestar;
+            
+            crudProductos.update(new Producto(integer, null, null, nuevoStock));
+            
+        }
+        
     }//GEN-LAST:event_jButtonConfirmarActionPerformed
+
+    private void jButtonEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEliminarActionPerformed
+        lista.remove(producto);
+        inicializarTabla();
+    }//GEN-LAST:event_jButtonEliminarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

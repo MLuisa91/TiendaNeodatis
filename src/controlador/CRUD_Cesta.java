@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import modelo.Cesta;
+import modelo.Cliente;
 import modelo.Producto;
+import modelo.Usuario;
 import org.neodatis.odb.ODB;
 import org.neodatis.odb.ODBFactory;
 import org.neodatis.odb.Objects;
@@ -23,15 +25,16 @@ import org.neodatis.odb.impl.core.query.criteria.CriteriaQuery;
  * @author MRGOMAAL
  */
 public class CRUD_Cesta implements CRUD<Cesta> {
-
-    static ODB odb = ODBFactory.open("Tienda.db");
+    
     private List<Producto> listaProductos;
+    private Usuario cliente;
 
     public CRUD_Cesta() {
     }
 
-    public CRUD_Cesta(List<Producto> listaProductos) {
+    public CRUD_Cesta(List<Producto> listaProductos, Cliente cliente) {
         this.listaProductos = new ArrayList();
+        this.cliente = cliente;
     }
 
     @Override
@@ -103,9 +106,11 @@ public class CRUD_Cesta implements CRUD<Cesta> {
         return true;
     }
 
-    public List<Cesta> getCestas() {
+    public List<Cesta> getCestas(Usuario usuario) {
+        
         ODB odb = ODBFactory.open("Tienda.db");
-        Objects<Cesta> lista = odb.getObjects(Cesta.class);
+        CriteriaQuery query = new CriteriaQuery(Cesta.class, Where.equal("cliente.dni", usuario.getDni()));
+        Objects<Cesta> lista = odb.getObjects(query);
         odb.close();
         return (List<Cesta>) lista;
     }
@@ -113,7 +118,18 @@ public class CRUD_Cesta implements CRUD<Cesta> {
     @SuppressWarnings("unchecked")
     @Override
     public Iterator<Cesta> listAll() {
-        return this.getCestas().iterator();
+        return null;
+    }
+    
+    public Cesta searchById(Cesta cesta){
+        ODB odb = ODBFactory.open("Tienda.db");
+        CriteriaQuery query = new CriteriaQuery(Cesta.class, Where.equal("cesta", cesta.getId()));
+        
+        Object resultado = odb.getObjects(query);
+        odb.close();
+        
+        
+        return cesta;
     }
 
 }
