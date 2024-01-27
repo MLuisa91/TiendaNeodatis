@@ -40,7 +40,7 @@ public class CRUD_Cesta implements CRUD<Cesta> {
     @Override
     public boolean add(Cesta element) {
         ODB odb = ODBFactory.open("Tienda.db");
-        odb.store(new Cesta(element.getId(), element.getNombre(), element.getCliente(), element.getCesta(), element.getTotal()));
+        odb.store(new Cesta(element.getId(), element.getNombre(), element.getCliente(), element.getProductos(), element.getTotal()));
         odb.close();
         return true;
     }
@@ -50,7 +50,7 @@ public class CRUD_Cesta implements CRUD<Cesta> {
         ODB odb = ODBFactory.open("Tienda.db");
         Or where = Where.or();
 
-        if (element.getId() != 0 && !"".equals(element.getId())) {
+        if (element.getId() != null && !"".equals(element.getId())) {
             where.add(Where.equal("id", element.getId()));
         }
 
@@ -58,7 +58,7 @@ public class CRUD_Cesta implements CRUD<Cesta> {
             where.add(Where.like("nombre", element.getNombre()));
         }
 
-        if (element.getTotal() != 0 && !"".equals(element.getTotal())) {
+        if (element.getTotal() != null && !"".equals(element.getTotal())) {
             where.add(Where.equal("total", element.getTotal()));
         }
 
@@ -82,7 +82,7 @@ public class CRUD_Cesta implements CRUD<Cesta> {
             Cesta cesta = resultado.getFirst();
 
             cesta.setNombre(element.getNombre());
-            cesta.setCesta(element.getCesta());
+            cesta.setProductos(element.getProductos());
 
             odb.store(cesta);
             odb.commit();
@@ -123,13 +123,15 @@ public class CRUD_Cesta implements CRUD<Cesta> {
     
     public Cesta searchById(Cesta cesta){
         ODB odb = ODBFactory.open("Tienda.db");
-        CriteriaQuery query = new CriteriaQuery(Cesta.class, Where.equal("cesta", cesta.getId()));
+        CriteriaQuery query = new CriteriaQuery(Cesta.class, Where.equal("id", cesta.getId()));
         
-        Object resultado = odb.getObjects(query);
+        Objects<Cesta> resultado = odb.getObjects(query);
         odb.close();
         
+        if(resultado.isEmpty())
+            return null;
         
-        return cesta;
+        return resultado.getFirst();
     }
 
 }

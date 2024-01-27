@@ -6,6 +6,7 @@ package vista;
 
 import controlador.CRUD_Productos;
 import java.util.List;
+import java.util.UUID;
 import javax.swing.JOptionPane;
 import modelo.Producto;
 import modelo.Usuario;
@@ -35,6 +36,8 @@ public class GestionProducto extends javax.swing.JFrame {
         } else if (AccionesEnum.MODIFICACION.equals(accion)) {
             mostrarDatosHabilitados(producto);
         }
+        
+        
     }
 
     /**
@@ -47,8 +50,6 @@ public class GestionProducto extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabelNombre = new javax.swing.JLabel();
-        jTextFieldId = new javax.swing.JTextField();
         jLabelApellidos = new javax.swing.JLabel();
         jTextFieldNombre = new javax.swing.JTextField();
         jLabelDireccion = new javax.swing.JLabel();
@@ -62,14 +63,6 @@ public class GestionProducto extends javax.swing.JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Producto"));
 
-        jLabelNombre.setText("Id:");
-
-        jTextFieldId.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldIdActionPerformed(evt);
-            }
-        });
-
         jLabelApellidos.setText("Nombre:");
 
         jLabelDireccion.setText("Precio:");
@@ -82,35 +75,26 @@ public class GestionProducto extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(32, 32, 32)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabelNombre)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(201, 201, 201)
-                        .addComponent(jLabelApellidos))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextFieldId, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabelUSuario)
-                            .addComponent(jTextFieldStock, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(35, 35, 35)
-                        .addComponent(jTextFieldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(35, 35, 35)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabelDireccion)
-                    .addComponent(jTextFieldPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(75, Short.MAX_VALUE))
+                    .addComponent(jLabelApellidos)
+                    .addComponent(jLabelUSuario)
+                    .addComponent(jTextFieldStock, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(44, 44, 44)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTextFieldPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelDireccion))
+                .addContainerGap(63, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(37, 37, 37)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelNombre)
                     .addComponent(jLabelApellidos)
                     .addComponent(jLabelDireccion))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextFieldId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextFieldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextFieldPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
@@ -138,16 +122,16 @@ public class GestionProducto extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonAceptar)
+                .addGap(27, 27, 27)
+                .addComponent(jButtonVolver)
+                .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButtonAceptar)
-                .addGap(28, 28, 28)
-                .addComponent(jButtonVolver)
-                .addGap(26, 26, 26))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -163,10 +147,6 @@ public class GestionProducto extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jTextFieldIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldIdActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldIdActionPerformed
 
     private void jButtonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolverActionPerformed
         if (AccionesEnum.ALTA.equals(accion)) {
@@ -188,8 +168,8 @@ public class GestionProducto extends javax.swing.JFrame {
         if (AccionesEnum.ALTA.equals(accion)) {
             Producto producto = recogerDatos();
 
-            Integer numero = Integer.parseInt(jTextFieldId.getText());
-            List<Producto> misProductos = crudProductos.search(new Producto(numero, null, null, null));
+            String id = producto.getId();
+            List<Producto> misProductos = crudProductos.search(new Producto(id, null, null, null));
             if (misProductos.isEmpty()) {
                 if (producto != null && crudProductos.add(producto)) {
                     JOptionPane.showMessageDialog(this, "Operación realizada correctamente.");
@@ -233,10 +213,8 @@ public class GestionProducto extends javax.swing.JFrame {
     private javax.swing.JButton jButtonVolver;
     private javax.swing.JLabel jLabelApellidos;
     private javax.swing.JLabel jLabelDireccion;
-    private javax.swing.JLabel jLabelNombre;
     private javax.swing.JLabel jLabelUSuario;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextFieldId;
     private javax.swing.JTextField jTextFieldNombre;
     private javax.swing.JTextField jTextFieldPrecio;
     private javax.swing.JTextField jTextFieldStock;
@@ -245,8 +223,6 @@ public class GestionProducto extends javax.swing.JFrame {
     private void mostrarDatosDeshabilitados(Producto producto) {
         jTextFieldNombre.setText(producto.getNombre());
         jTextFieldNombre.setEnabled(false);
-        jTextFieldId.setText(String.valueOf(producto.getId()));
-        jTextFieldId.setEnabled(false);
         jTextFieldPrecio.setText(String.valueOf(producto.getPrecio()));
         jTextFieldPrecio.setEnabled(false);
         jTextFieldStock.setText(String.valueOf(producto.getStock()));
@@ -257,7 +233,6 @@ public class GestionProducto extends javax.swing.JFrame {
     private void mostrarDatosHabilitados(Producto producto) {
 
         jTextFieldNombre.setText(producto.getNombre());
-        jTextFieldId.setText(String.valueOf(producto.getId()));
         jTextFieldPrecio.setText(String.valueOf(producto.getPrecio()));
         jTextFieldStock.setText(String.valueOf(producto.getStock()));
 
@@ -267,11 +242,7 @@ public class GestionProducto extends javax.swing.JFrame {
         boolean correcto = true;
         String errores = "";
         Producto producto = null;
-        Integer id = Integer.parseInt(jTextFieldId.getText());
-        if (id == null) {
-            errores = errores + "- El campo id es obligatorio.\n";
-            correcto = false;
-        }
+
         String nombre = jTextFieldNombre.getText();
         if (nombre.isEmpty()) {
             errores = errores + "- El campo nombre es obligatorio.\n";
@@ -288,8 +259,11 @@ public class GestionProducto extends javax.swing.JFrame {
             errores = errores + "- El campo stock es obligatorio.\n";
             correcto = false;
         }
-
+        String id = UUID.randomUUID().toString();
         if (correcto == true) {
+            if(this.producto != null){
+                id = this.producto.getId();
+            }
             producto = new Producto(id, nombre, precio, stock);
         }else{
             JOptionPane.showMessageDialog(this, errores);

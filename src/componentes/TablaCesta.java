@@ -14,7 +14,7 @@ import modelo.Cesta;
 public class TablaCesta extends AbstractTableModel {
     
     private List<Cesta> lista;
-    private String nombreColumnas[] = {"Id", "Nombre", "Total"};
+    private String nombreColumnas[] = {"Nombre", "Total"};
 
     public TablaCesta(List<Cesta> lista) {
         this.lista = lista;
@@ -54,10 +54,8 @@ public class TablaCesta extends AbstractTableModel {
     public Object getValueAt(int rowIndex, int columnIndex) {
         switch (columnIndex) {
             case 0:
-                return lista.get(rowIndex).getId();
-            case 1:
                 return lista.get(rowIndex).getNombre();
-            case 2:    
+            case 1:    
                 return lista.get(rowIndex).getTotal();
         }
         return null;

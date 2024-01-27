@@ -49,8 +49,6 @@ public class ListarCesta extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
         jTextFieldNombre = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        jTextFieldID = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jTextFieldTotal = new javax.swing.JTextField();
         jButtonFiltrar = new javax.swing.JButton();
@@ -75,8 +73,6 @@ public class ListarCesta extends javax.swing.JFrame {
 
         jLabel3.setText("Nombre: ");
 
-        jLabel2.setText("Id:");
-
         jLabel4.setText("Total: ");
 
         jButtonFiltrar.setText("Filtrar");
@@ -100,21 +96,17 @@ public class ListarCesta extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextFieldID, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextFieldNombre))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextFieldTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTextFieldNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
+                            .addComponent(jTextFieldTotal))
+                        .addGap(62, 62, 62)
                         .addComponent(jButtonFiltrar)
                         .addGap(26, 26, 26)
                         .addComponent(jButtonVolver)))
@@ -129,8 +121,6 @@ public class ListarCesta extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jTextFieldID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
                     .addComponent(jTextFieldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
@@ -163,29 +153,22 @@ public class ListarCesta extends javax.swing.JFrame {
     private javax.swing.JButton jButtonFiltrar;
     private javax.swing.JButton jButtonVolver;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextFieldID;
     private javax.swing.JTextField jTextFieldNombre;
     private javax.swing.JTextField jTextFieldTotal;
     // End of variables declaration//GEN-END:variables
 
     private void aplicarFiltros() {
-        String id = jTextFieldID.getText();
         String total = jTextFieldTotal.getText();
         String nombre = jTextFieldNombre.getText();
-        Integer idEntero = null;
         Float totalFloat = null;
-        if(!id.isEmpty())
-                idEntero = Integer.parseInt(id);
-        
         if (!total.isEmpty())
              totalFloat = Float.parseFloat(total);
         
-        Cesta cesta = new Cesta(idEntero, nombre, null, null, totalFloat);
+        Cesta cesta = new Cesta(null, nombre, null, null, totalFloat);
         
         List<Cesta> filtrados = crudCesta.search(cesta);
 
@@ -219,6 +202,7 @@ public class ListarCesta extends javax.swing.JFrame {
             public void actionPerformed(ActionEvent ae) {
                 JOptionPane.showMessageDialog(ListarCesta.this, "¿Desea borrar la cesta?");
                 crudCesta.delete(cesta);
+                inicializarTabla();
             }
         });
         

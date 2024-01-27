@@ -8,7 +8,7 @@ import modelo.Producto;
 public class TablaProductos extends AbstractTableModel {
 
     private List<Producto> lista;
-    private String nombreColumnas[] = {"Id", "Nombre", "Precio", "Stock"};
+    private String nombreColumnas[] = {"Nombre", "Precio", "Stock"};
 
     public TablaProductos(List<Producto> lista) {
         this.lista = lista;
@@ -48,12 +48,10 @@ public class TablaProductos extends AbstractTableModel {
     public Object getValueAt(int rowIndex, int columnIndex) {
         switch (columnIndex) {
             case 0:
-                return lista.get(rowIndex).getId();
-            case 1:
                 return lista.get(rowIndex).getNombre();
-            case 2:
+            case 1:
                 return lista.get(rowIndex).getPrecio();
-            case 3: 
+            case 2: 
                 return lista.get(rowIndex).getStock();
         }
         return null;

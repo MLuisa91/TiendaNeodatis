@@ -14,6 +14,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.swing.JOptionPane;
 import modelo.Cesta;
@@ -63,8 +64,6 @@ public class GestionCesta extends javax.swing.JFrame {
         jTextFieldTotal = new javax.swing.JTextField();
         jButtonEliminar = new javax.swing.JButton();
         jLabelNombre = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jTextFieldID = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jTextFieldNombre = new javax.swing.JTextField();
 
@@ -108,8 +107,6 @@ public class GestionCesta extends javax.swing.JFrame {
 
         jLabelNombre.setText("Producto: ");
 
-        jLabel2.setText("Id:");
-
         jLabel3.setText("Nombre: ");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -124,7 +121,7 @@ public class GestionCesta extends javax.swing.JFrame {
                 .addGap(20, 20, 20))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                             .addGap(1, 1, 1)
@@ -143,24 +140,18 @@ public class GestionCesta extends javax.swing.JFrame {
                                 .addComponent(jLabelNombre))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextFieldID, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
                         .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextFieldNombre)))
+                        .addGap(18, 18, 18)
+                        .addComponent(jTextFieldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(30, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jTextFieldID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3)
-                    .addComponent(jTextFieldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jTextFieldNombre, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jLabelNombre)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -200,9 +191,9 @@ public class GestionCesta extends javax.swing.JFrame {
     private void jButtonConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConfirmarActionPerformed
         Cesta cesta = recogerDatos();
 
-        Integer id = Integer.parseInt(jTextFieldID.getText());
-        List<Cesta> misCestas = crudCesta.search(new Cesta(id, null, null, null, null));
-        if (misCestas.isEmpty()) {
+        String id = cesta.getId();
+        Cesta misCesta = crudCesta.searchById(new Cesta(id, null, null, null, null));
+        if (misCesta == null) {
             if (cesta != null && crudCesta.add(cesta)) {
                 JOptionPane.showMessageDialog(this, "Operación realizada correctamente.");
                 BienvenidoUsuario hola = new BienvenidoUsuario(usuario);
@@ -214,24 +205,37 @@ public class GestionCesta extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(this, "Ya hay un cesta con el mismo id.");
         }
-        
-        Map<Integer, List<Producto>> productoMap = lista.stream().collect(Collectors.groupingBy(Producto::getId));
-        
-        for (Map.Entry<Integer, List<Producto>> entry : productoMap.entrySet()) {
-            Integer integer = entry.getKey();
+
+        Map<String, List<Producto>> productoMap = lista.stream().collect(Collectors.groupingBy(Producto::getId));
+
+        for (Map.Entry<String, List<Producto>> entry : productoMap.entrySet()) {
+            String integer = entry.getKey();
             List<Producto> cantidadStock = entry.getValue();
-            
+
             Integer cantidadRestar = cantidadStock.size();
-            Integer nuevoStock = producto.getStock() - cantidadRestar;
-            
-            crudProductos.update(new Producto(integer, null, null, nuevoStock));
-            
+
+            Producto productoEncontrado = crudProductos.searchById(new Producto(integer, null, null, null));
+
+            Integer nuevoStock = productoEncontrado.getStock() - cantidadRestar;
+            if (nuevoStock <= 0) {
+                JOptionPane.showMessageDialog(this, "No hay stock del producto " + producto.getNombre() + ".");
+            } else {
+                productoEncontrado.setStock(nuevoStock);
+
+                crudProductos.update(productoEncontrado);
+            }
+
         }
-        
+
     }//GEN-LAST:event_jButtonConfirmarActionPerformed
 
     private void jButtonEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEliminarActionPerformed
         lista.remove(producto);
+        Float total = Float.parseFloat(jTextFieldTotal.getText());
+
+        total = total - producto.getPrecio();
+
+        jTextFieldTotal.setText(String.valueOf(total));
         inicializarTabla();
     }//GEN-LAST:event_jButtonEliminarActionPerformed
 
@@ -242,12 +246,10 @@ public class GestionCesta extends javax.swing.JFrame {
     private javax.swing.JButton jButtonEliminar;
     private javax.swing.JComboBox jComboBoxProductos;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabelNombre;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextFieldID;
     private javax.swing.JTextField jTextFieldNombre;
     private javax.swing.JTextField jTextFieldTotal;
     // End of variables declaration//GEN-END:variables
@@ -284,17 +286,9 @@ public class GestionCesta extends javax.swing.JFrame {
             correcto = false;
         }
 
-        Integer id = Integer.parseInt(jTextFieldID.getText());
-
-        if (id == null) {
-            errores = errores + "- El campo nombre es obligatorio.\n";
-            correcto = false;
-        }
-
         Float total = Float.parseFloat(jTextFieldTotal.getText());
-
         if (correcto == true) {
-            cesta = new Cesta(id, nombre, cliente, lista, total);
+            cesta = new Cesta(UUID.randomUUID().toString(), nombre, (Cliente) usuario, lista, total);
         } else {
             JOptionPane.showMessageDialog(this, errores);
         }

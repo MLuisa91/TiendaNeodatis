@@ -101,5 +101,18 @@ public class CRUD_Productos implements CRUD<Producto> {
     public Iterator<Producto> listAll() {
     return null;
     }
+    
+    public Producto searchById(Producto element){
+         ODB odb = ODBFactory.open("Tienda.db");
+        CriteriaQuery query = new CriteriaQuery(Producto.class, Where.equal("id", element.getId()));
+        
+        Objects<Producto> resultado = odb.getObjects(query);
+        odb.close();
+        
+        if(resultado.isEmpty())
+            return null;
+        
+        return resultado.getFirst();
+    }
 
 }

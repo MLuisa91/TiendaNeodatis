@@ -1,23 +1,23 @@
 package modelo;
 
 public class Producto {
-	private Integer id;
+	private String id;
 	private String nombre;
 	private Float precio;
 	private Integer stock;
 
-    public Producto(Integer id, String nombre, Float precio, Integer stock) {
+    public Producto(String id, String nombre, Float precio, Integer stock) {
         this.id = id;
         this.nombre = nombre;
         this.precio = precio;
         this.stock = stock;
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

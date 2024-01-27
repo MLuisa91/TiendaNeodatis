@@ -4,31 +4,29 @@
  */
 package modelo;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class Cesta {
 
-    private Integer id;
+    private String id;
     private String nombre;
     private Cliente cliente;
-    private List<Producto> cesta;
+    private List<Producto> productos;
     private Float total;
 
-    public Cesta(Integer id, String nombre, Cliente cliente, List<Producto> cesta, Float total) {
+    public Cesta(String id, String nombre, Cliente cliente, List<Producto> productos, Float total) {
         this.id = id;
         this.nombre = nombre;
         this.cliente = cliente;
-        this.cesta = new ArrayList();
+        this.productos = productos;
         this.total = total;
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -48,12 +46,12 @@ public class Cesta {
         this.cliente = cliente;
     }
 
-    public List<Producto> getCesta() {
-        return cesta;
+    public List<Producto> getProductos() {
+        return productos;
     }
 
-    public void setCesta(List<Producto> cesta) {
-        this.cesta = cesta;
+    public void setProductos(List<Producto> productos) {
+        this.productos = productos;
     }
 
     public Float getTotal() {

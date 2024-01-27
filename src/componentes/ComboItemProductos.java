@@ -4,7 +4,7 @@ import modelo.Producto;
 
 public class ComboItemProductos {
     
-    private Integer clave;
+    private String clave;
     private String valor;
     private Producto producto;
 
@@ -14,7 +14,7 @@ public class ComboItemProductos {
         this.producto = producto;
     }
 
-    public Integer getClave() {
+    public String getClave() {
         return clave;
     }
 
