@@ -15,6 +15,7 @@ import org.neodatis.odb.impl.core.query.criteria.CriteriaQuery;
 public class CRUD_Productos implements CRUD<Producto> {
 
     @Override
+    //Añadir productos a base de datos
     public boolean add(Producto element) {
         ODB odb = ODBFactory.open("Tienda.db");
         odb.store(new Producto(element.getId(), element.getNombre(), element.getPrecio(), element.getStock()));
@@ -25,6 +26,7 @@ public class CRUD_Productos implements CRUD<Producto> {
     }
 
     @Override
+    //Buscar productos por uno o varios campos
     public List<Producto> search(Producto element) {
         ODB odb = ODBFactory.open("Tienda.db");
         Or where = Where.or();
@@ -55,6 +57,7 @@ public class CRUD_Productos implements CRUD<Producto> {
     }
 
     @Override
+    //Actualizar productos por uno o por varios de sus campos
     public boolean update(Producto element) {
         ODB odb = ODBFactory.open("Tienda.db");
         CriteriaQuery query = new CriteriaQuery(Producto.class, Where.equal("id", element.getId()));
@@ -78,6 +81,7 @@ public class CRUD_Productos implements CRUD<Producto> {
     }
 
     @Override
+    //Eliminar productos de base de datos
     public boolean delete(Producto element) {
        
         ODB odb = ODBFactory.open("Tienda.db");
@@ -90,6 +94,7 @@ public class CRUD_Productos implements CRUD<Producto> {
         return true;
     }
 
+    //Método que retorna una lista con los productos registrados en la base de datos
     public List<Producto> getProductos() {
         ODB odb = ODBFactory.open("Tienda.db");
         Objects<Producto> lista = odb.getObjects(Producto.class);
@@ -102,6 +107,7 @@ public class CRUD_Productos implements CRUD<Producto> {
     return null;
     }
     
+    //Método que busca un producto por su id
     public Producto searchById(Producto element){
          ODB odb = ODBFactory.open("Tienda.db");
         CriteriaQuery query = new CriteriaQuery(Producto.class, Where.equal("id", element.getId()));

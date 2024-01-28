@@ -16,6 +16,7 @@ import org.neodatis.odb.impl.core.query.criteria.CriteriaQuery;
 public class CRUD_Usuario implements CRUD<Usuario> {
 
     @Override
+    //Método para añadir un Usuario a la base de datos
     public boolean add(Usuario element) {
         ODB odb = ODBFactory.open("Tienda.db");
         odb.store(new Usuario(element.getAdministrador(), element.getDni(), element.getNombre(), element.getApellidos(), element.getDireccion()));
@@ -26,6 +27,7 @@ public class CRUD_Usuario implements CRUD<Usuario> {
     }
 
     @Override
+    //Método que busca un usuario por uno o varios campos
     public List<Usuario> search(Usuario element) {
         ODB odb = ODBFactory.open("Tienda.db");
         Or where = Where.or();
@@ -56,6 +58,7 @@ public class CRUD_Usuario implements CRUD<Usuario> {
     }
 
     @Override
+    //Método que actualiza uno o varios campos de un usuario
     public boolean update(Usuario element) {
         ODB odb = ODBFactory.open("Tienda.db");
         CriteriaQuery query = new CriteriaQuery(Usuario.class, Where.equal("dni", element.getDni()));
@@ -91,6 +94,7 @@ public class CRUD_Usuario implements CRUD<Usuario> {
         return true;
     }
 
+    //Método que devuelve una lista solamente con los Usuarios de tipo Cliente
     public List<Usuario> getClientes() {
         ODB odb = ODBFactory.open("Tienda.db");
         CriteriaQuery query = new CriteriaQuery(Usuario.class, Where.equal("administrador", false));
@@ -105,6 +109,7 @@ public class CRUD_Usuario implements CRUD<Usuario> {
         return null;
     }
 
+    //Método que busca un usuario por su id, en este caso el id es el dni
     public Usuario searchByDni(Usuario u) {
         ODB odb = ODBFactory.open("Tienda.db");
         CriteriaQuery query = new CriteriaQuery(Usuario.class, Where.equal("dni", u.getDni()));

@@ -202,7 +202,7 @@ public class GestionCesta extends javax.swing.JFrame {
             Producto productoEncontrado = crudProductos.searchById(new Producto(idString, null, null, null));
 
             Integer nuevoStock = productoEncontrado.getStock() - cantidadRestar;
-            if (nuevoStock <= 0) {
+            if (nuevoStock < 0) {
                 JOptionPane.showMessageDialog(this, "No hay stock del producto " + producto.getNombre() + ".");
                 hayStock = false;
             } else {

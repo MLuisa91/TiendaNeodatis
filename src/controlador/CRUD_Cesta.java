@@ -29,15 +29,17 @@ public class CRUD_Cesta implements CRUD<Cesta> {
     private List<Producto> listaProductos;
     private Usuario cliente;
 
-    public CRUD_Cesta() {
-    }
-
     public CRUD_Cesta(List<Producto> listaProductos, Cliente cliente) {
         this.listaProductos = new ArrayList();
         this.cliente = cliente;
     }
 
+    public CRUD_Cesta() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     @Override
+    //Método para añadir cestas a la base de datos
     public boolean add(Cesta element) {
         ODB odb = ODBFactory.open("Tienda.db");
         odb.store(new Cesta(element.getId(), element.getNombre(), element.getCliente(), element.getProductos(), element.getTotal()));
@@ -46,6 +48,7 @@ public class CRUD_Cesta implements CRUD<Cesta> {
     }
 
     @Override
+    //Método para buscar por uno o varios campos
     public List<Cesta> search(Cesta element) {
         ODB odb = ODBFactory.open("Tienda.db");
         Or where = Where.or();
@@ -73,11 +76,11 @@ public class CRUD_Cesta implements CRUD<Cesta> {
     }
 
     @Override
+    //Las cestas no se actualizan por lo que no es un métood necesario
     public boolean update(Cesta element) {
         ODB odb = ODBFactory.open("Tienda.db");
 
         if (element != null) {
-
 
             odb.store(element);
             odb.commit();
@@ -91,6 +94,7 @@ public class CRUD_Cesta implements CRUD<Cesta> {
     }
 
     @Override
+    //Borrado de cestas
     public boolean delete(Cesta element) {
         ODB odb = ODBFactory.open("Tienda.db");
          CriteriaQuery query = new CriteriaQuery(Cesta.class, Where.equal("id", element.getId()));
@@ -101,6 +105,7 @@ public class CRUD_Cesta implements CRUD<Cesta> {
         return true;
     }
 
+    //Método que obtiene las cestas de un cliente específico
     public List<Cesta> getCestas(Usuario usuario) {
         
         ODB odb = ODBFactory.open("Tienda.db");
@@ -116,6 +121,7 @@ public class CRUD_Cesta implements CRUD<Cesta> {
         return null;
     }
     
+    //Método para buscar cestas por su id
     public Cesta searchById(Cesta cesta){
         ODB odb = ODBFactory.open("Tienda.db");
         CriteriaQuery query = new CriteriaQuery(Cesta.class, Where.equal("id", cesta.getId()));
