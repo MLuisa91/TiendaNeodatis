@@ -75,16 +75,11 @@ public class CRUD_Cesta implements CRUD<Cesta> {
     @Override
     public boolean update(Cesta element) {
         ODB odb = ODBFactory.open("Tienda.db");
-        CriteriaQuery query = new CriteriaQuery(Cesta.class, Where.equal("id", element.getId()));
 
-        Objects<Cesta> resultado = odb.getObjects(query);
-        if (resultado != null) {
-            Cesta cesta = resultado.getFirst();
+        if (element != null) {
 
-            cesta.setNombre(element.getNombre());
-            cesta.setProductos(element.getProductos());
 
-            odb.store(cesta);
+            odb.store(element);
             odb.commit();
             odb.close();
         } else {

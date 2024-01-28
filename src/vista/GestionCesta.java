@@ -190,35 +190,21 @@ public class GestionCesta extends javax.swing.JFrame {
 
     private void jButtonConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConfirmarActionPerformed
         Cesta cesta = recogerDatos();
-
-        String id = cesta.getId();
-        Cesta misCesta = crudCesta.searchById(new Cesta(id, null, null, null, null));
-        if (misCesta == null) {
-            if (cesta != null && crudCesta.add(cesta)) {
-                JOptionPane.showMessageDialog(this, "Operación realizada correctamente.");
-                BienvenidoUsuario hola = new BienvenidoUsuario(usuario);
-                dispose();
-                hola.setVisible(true);
-            } else {
-                JOptionPane.showMessageDialog(this, "Se ha producido un error.");
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "Ya hay un cesta con el mismo id.");
-        }
+        Boolean hayStock = true;
 
         Map<String, List<Producto>> productoMap = lista.stream().collect(Collectors.groupingBy(Producto::getId));
-
         for (Map.Entry<String, List<Producto>> entry : productoMap.entrySet()) {
-            String integer = entry.getKey();
+            String idString = entry.getKey();
             List<Producto> cantidadStock = entry.getValue();
 
             Integer cantidadRestar = cantidadStock.size();
 
-            Producto productoEncontrado = crudProductos.searchById(new Producto(integer, null, null, null));
+            Producto productoEncontrado = crudProductos.searchById(new Producto(idString, null, null, null));
 
             Integer nuevoStock = productoEncontrado.getStock() - cantidadRestar;
             if (nuevoStock <= 0) {
                 JOptionPane.showMessageDialog(this, "No hay stock del producto " + producto.getNombre() + ".");
+                hayStock = false;
             } else {
                 productoEncontrado.setStock(nuevoStock);
 
@@ -226,6 +212,25 @@ public class GestionCesta extends javax.swing.JFrame {
             }
 
         }
+
+        if (hayStock) {
+            String id = cesta.getId();
+            Cesta misCesta = crudCesta.searchById(new Cesta(id, null, null, null, null));
+            if (misCesta == null) {
+                if (cesta != null && crudCesta.add(cesta)) {
+                    JOptionPane.showMessageDialog(this, "Operación realizada correctamente.");
+                    BienvenidoUsuario hola = new BienvenidoUsuario(usuario);
+                    dispose();
+                    hola.setVisible(true);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Se ha producido un error.");
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Ya hay un cesta con el mismo id.");
+            }
+
+        }
+
 
     }//GEN-LAST:event_jButtonConfirmarActionPerformed
 
@@ -288,7 +293,7 @@ public class GestionCesta extends javax.swing.JFrame {
 
         Float total = Float.parseFloat(jTextFieldTotal.getText());
         if (correcto == true) {
-            cesta = new Cesta(UUID.randomUUID().toString(), nombre, (Cliente) usuario, lista, total);
+            cesta = new Cesta(UUID.randomUUID().toString(), nombre, (Cliente) usuario, null, total);
         } else {
             JOptionPane.showMessageDialog(this, errores);
         }
